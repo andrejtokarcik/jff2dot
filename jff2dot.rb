@@ -23,6 +23,14 @@ class Transition
   end
 end
 
+class MealyTransition < Transition
+  attr_accessor :transout
+
+  def label
+    return "#{@read}, #{@transout}"
+  end
+end
+
 class PDATransition < Transition
   attr_accessor :push, :pop
 
@@ -44,7 +52,7 @@ class TuringTransition < Transition
 end
 
 class JFF
-  Supported = [:fa, :pda, :turing]
+  Supported = [:fa, :mealy, :pda, :turing]
   def initialize( io )
     @doc = Hpricot.XML(io)
     typenode = @doc.at('/structure/type')
@@ -89,7 +97,11 @@ class JFF
       states if @states == nil # populates @states
       (@doc / '/structure/automaton/transition').each do |jfftransition|
         transition = nil
-        if @type == :pda
+        if @type == :mealy
+          transition = MealyTransition.new
+          transition.transout = jfftransition.at('transout').inner_text.strip
+          transition.transout = Lamda if transition.transout == ''
+        elsif @type == :pda
           transition = PDATransition.new
           transition.push = jfftransition.at('push').inner_text.strip
           transition.pop = jfftransition.at('pop').inner_text.strip
