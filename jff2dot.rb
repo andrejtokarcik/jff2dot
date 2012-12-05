@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# encoding: utf-8
 
 require 'rubygems'
 require 'hpricot'
@@ -123,9 +124,9 @@ doc = File.open(ARGV[0], 'r') { |io| JFF.new(io) }
 
 puts "digraph jff2dot {
   fontname=\"DejaVu Serif\";
-  fontsize=10;
-  node [fontname=\"DejaVu Serif\", fontsize=10];
-  edge [fontname=\"DejaVu Serif\", fontsize=10];
+  fontsize=20;
+  node [fontname=\"DejaVu Serif\", fontsize=20];
+  edge [fontname=\"DejaVu Serif\", fontsize=20];
   rankdir=LR;
   // accepting states
   node [shape=doublecircle] #{doc.accepting_states.map{ |state| state.id } * ' '};
